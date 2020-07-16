@@ -4,19 +4,19 @@ export const updateText = (event) => {
   const { value: text, name } = event.target;
 
   switch (name) {
+    case "operation":
+      return {
+        type: "SHOW_PAGE",
+        payload: {
+          page: event.target.value,
+        },
+      };
     case "currency":
       return {
         type: "UPDATE_TEXT",
         payload: {
           name,
           text: event.target.options[event.target.value].text,
-        },
-      };
-    case "operation":
-      return {
-        type: "SHOW_PAGE",
-        payload: {
-          page: event.target.value,
         },
       };
     default:
@@ -65,7 +65,6 @@ export const fetchCurrencies = (currenciesParams) => (dispatch) => {
       symbols: currenciesList.join(","),
     },
   }).then((data) => {
-    // console.log("data.rates", data.rates);
 
     dispatch({
       type: "SUBMIT_TOTAL",
@@ -76,4 +75,3 @@ export const fetchCurrencies = (currenciesParams) => (dispatch) => {
     });
   });
 };
-

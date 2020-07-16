@@ -42,6 +42,12 @@ body {
   max-width: 102px;
 }
 
+.invalid-feedback {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .loader {
   position: relative;
   left: 50%;
