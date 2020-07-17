@@ -6,13 +6,18 @@ class TotalAction extends React.Component {
     const {
       currenciesList,
       currency,
+      total,
       totalExpences,
     } = this.props.state.reducer;
     this.handleChange = this.props.actions.updateText;
-    //this.onClick = this.props.actions.submit;
     this.onClick = (event) => {
       this.props.actions.submit(event, { currency, currenciesList });
     };
+
+    if (total.length === 0) {
+        return <div className="input-group mb-2 center">No expences</div>;
+      }
+  
     const currencyIndex = String(
       1 + currenciesList.findIndex((item) => item === currency)
     );
@@ -49,7 +54,7 @@ class TotalAction extends React.Component {
             Calculate
           </button>
         </div>
-        <div className="alert alert-light" role="alert">
+        <div className="input-group mb-2 center">
           {totalExpences !== 0 &&
             "Total expences: " + totalExpences + " " + currency}
         </div>

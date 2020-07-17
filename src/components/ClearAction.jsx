@@ -3,7 +3,11 @@ import { bindActions } from "../hoc/bindActions";
 
 class ClearAction extends React.Component {
   render() {
-    const { date } = this.props.state.reducer;
+    const { date, total } = this.props.state.reducer;
+    if (total.length === 0) {
+      return <div className="input-group mb-2 center">No expences</div>;
+    }
+
     this.handleChange = this.props.actions.updateText;
     this.onClick = this.props.actions.submit;
 

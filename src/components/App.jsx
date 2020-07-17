@@ -15,29 +15,6 @@ class App extends React.Component {
 
   render() {
     const { page, errors } = this.props.state.reducer;
-    // const { page, currenciesList, currency } = this.props.state.reducer;
-    // this.handleChange = this.props.actions.updateText;
-    // this.onClick = this.props.actions.submit;
-    // this.onClickTotal = (event) => {
-    //   this.props.actions.submit(event, { currency, currenciesList });
-    // };
-
-    // const currencyIndex = String(
-    //   1 + currenciesList.findIndex((item) => item === currency)
-    // );
-
-    // const selectCurrencyList = [
-    //   <option defaultValue key="0">
-    //     currency
-    //   </option>,
-    //   currenciesList.map((currency, index) => {
-    //     return (
-    //       <option key={index + 1} value={index + 1}>
-    //         {currency}
-    //       </option>
-    //     );
-    //   }),
-    // ];
 
     return (
       <BrowserRouter>

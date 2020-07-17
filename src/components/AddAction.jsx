@@ -9,7 +9,6 @@ class AddAction extends React.Component {
       currenciesList,
       currency,
       item,
-      errors
     } = this.props.state.reducer;
     this.handleChange = this.props.actions.updateText;
     this.onClick = this.props.actions.submit;
@@ -38,11 +37,10 @@ class AddAction extends React.Component {
             type="date"
             className="form-control mb-2"
             name="date"
-            value={date} // !== "" ? date : new Date().toJSON().substring(0, 10)}
+            value={date}
             placeholder="date"
             onChange={this.handleChange}
           />
-          {/* {error ? <div className="invalid-feedback">{error}</div> : null} */}
 
           <input
             type="number"
@@ -79,7 +77,6 @@ class AddAction extends React.Component {
             Save
           </button>
         </div>
-        {/* {Object.keys(errors).length !== 0 ? <div className="invalid-feedback">{"Fields required: " + Object.keys(errors).join(", ")}</div> : null} */}
       </div>
     );
   }

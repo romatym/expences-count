@@ -6,13 +6,17 @@ const initialState = {
   errors: {},
   page: "0",
   item: "",
-  date: String(new Date().toJSON().substring(0, 10)), //"", //new Date(),
+  date: todayDate(),
   currency: "",
   amount: "",
   currenciesList: currenciesSet,
   currencyRate: 0,
   totalExpences: 0,
 };
+
+function todayDate() {
+  return String(new Date().toJSON().substring(0, 10));
+}
 
 const CheckErrors = (state, action) => {
   const errors = {};
@@ -54,7 +58,9 @@ const CheckErrors = (state, action) => {
 const reducer = (state = initialState, action) => {
   const { date, amount, currency, item } = state;
 
-  console.log("types", types);
+  console.log("date", date);
+  console.log("!date", !date);
+  console.log("!date && todayDate()", !date && todayDate());
 
   if (action.type === types.UPDATE_TEXT) {
     return {
@@ -67,6 +73,7 @@ const reducer = (state = initialState, action) => {
       ...state,
       errors: {},
       page: action.payload.page,
+      date: date ? date : todayDate(),
     };
   }
 
@@ -91,11 +98,13 @@ const reducer = (state = initialState, action) => {
             item,
           },
         ],
-        date: "",
+        //date: "",
         amount: "",
         currency: "",
         item: "",
+        errors: {},
       };
+
     case types.SUBMIT_CLEAR:
       return {
         ...state,
@@ -104,6 +113,7 @@ const reducer = (state = initialState, action) => {
         }),
         page: "0",
       };
+
     case types.SUBMIT_TOTAL:
       const { baseCurrency, currenciesRates } = action.payload;
       let baseRate = 0,
@@ -124,12 +134,6 @@ const reducer = (state = initialState, action) => {
         ...state,
         totalExpences,
       };
-
-    // case types.SHOW_PAGE:
-    //   return {
-    //     ...state,
-    //     page: action.payload.page,
-    //   };
 
     default:
       return state;

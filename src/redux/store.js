@@ -2,8 +2,6 @@ import { createStore, applyMiddleware } from "redux";
 import rootReducer from "./rootReducer";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
-// import { FETCH_SUCCESS_AUTH, LOGOUT } from "./types";
-// import { cookies } from "../components/utils/cookies";
 
 // const logger = (store) => (next) => (action) => {
 // //   console.log("store", store.getState());
@@ -22,15 +20,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 // };
 
 const updateCookies = ({ dispatch, getState }) => (next) => (action) => {
-  // if (action.type === FETCH_SUCCESS_AUTH) {
-  //   cookies.set("session_id", action.payload.session_id, {
-  //     path: "/",
-  //     maxAge: 2592000,
-  //   });
-  // }
-  // if (action.type === LOGOUT) {
-  //   cookies.remove("session_id");
-  // }
+
   return next(action);
 };
 

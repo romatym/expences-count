@@ -5,7 +5,6 @@ class ChooseAction extends React.Component {
   render() {
     const { page } = this.props.state.reducer;
     this.handleChange = this.props.actions.updateText;
-    //console.log("page", page);
 
     return (
       <div className="form-row action">
