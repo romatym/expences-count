@@ -58,10 +58,6 @@ const CheckErrors = (state, action) => {
 const reducer = (state = initialState, action) => {
   const { date, amount, currency, item } = state;
 
-  console.log("date", date);
-  console.log("!date", !date);
-  console.log("!date && todayDate()", !date && todayDate());
-
   if (action.type === types.UPDATE_TEXT) {
     return {
       ...state,
