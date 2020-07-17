@@ -1,6 +1,6 @@
 import queryString from "querystring";
 
-export const API_URL = "http://data.fixer.io/api/latest";
+export const API_URL = "https://data.fixer.io/api/latest";
 export const API_KEY = "8d26248b1c5d84fdfef651056a7d1e5a";
 
 export const fetchApi = (url, options = {}) => {
