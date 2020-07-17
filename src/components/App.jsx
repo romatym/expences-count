@@ -13,6 +13,12 @@ class App extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {}
 
+  errorsText = (errors) => {
+    return Object.entries(errors).map(([key, value]) => {
+      return String(key + ": " + value);
+    }).join(", ");
+  };
+
   render() {
     const { page, errors } = this.props.state.reducer;
 
@@ -24,7 +30,9 @@ class App extends React.Component {
           {page === "2" && <ListAction />}
           {page === "3" && <ClearAction />}
           {page === "4" && <TotalAction />}
-          {Object.keys(errors).length !== 0 ? <div className="invalid-feedback">{"Fields required: " + Object.keys(errors).join(", ")}</div> : null}
+          {Object.keys(errors).length !== 0 && (
+            <div className="invalid-feedback">{this.errorsText(errors)}</div>
+          )}
         </div>
       </BrowserRouter>
     );

@@ -64,14 +64,33 @@ export const fetchCurrencies = (currenciesParams) => (dispatch) => {
     params: {
       symbols: currenciesList.join(","),
     },
-  }).then((data) => {
+  })
+    .then((data) => {
+      if (data.success) {
+        dispatch({
+          type: "SUBMIT_TOTAL",
+          payload: {
+            baseCurrency: currency,
+            currenciesRates: data.rates,
+          },
+        });
+      } else {
+        dispatch({
+          type: "SUBMIT_TOTAL",
+          payload: {
+            errors: data.error,
+          },
+        });
+      }
+    })
+    .catch((response) => {
+      console.log("response", response);
 
-    dispatch({
-      type: "SUBMIT_TOTAL",
-      payload: {
-        baseCurrency: currency,
-        currenciesRates: data.rates,
-      },
+      dispatch({
+        type: "SUBMIT_TOTAL",
+        payload: {
+          errors: response,
+        },
+      });
     });
-  });
 };

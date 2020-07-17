@@ -111,9 +111,18 @@ const reducer = (state = initialState, action) => {
       };
 
     case types.SUBMIT_TOTAL:
-      const { baseCurrency, currenciesRates } = action.payload;
+      const { baseCurrency, currenciesRates, errors } = action.payload;
+
+      if(errors) {
+        return {
+          ...state,
+          errors,
+        };
+      }
+
       let baseRate = 0,
         currentRate = 0;
+
       const totalExpences =
         Math.round(
           state.total.reduce((accumulator, currentElement) => {
