@@ -1,15 +1,65 @@
 import React from "react";
-import { bindActions } from "../hoc/bindActions";
+import { withExpenses } from "../hoc/withExpenses";
 
 class ClearAction extends React.Component {
-  render() {
-    const { date, total } = this.props.state.reducer;
-    if (total.length === 0) {
-      return <div className="input-group mb-2 center">No expences</div>;
+  constructor() {
+    super();
+
+    this.initialState = {
+      date: "",
+      errors: {}
+    };
+    this.state = this.initialState;
+  }
+
+  onChange = (event) => {
+    const { name, value } = event.target;
+
+    this.setState(() => ({
+      [name]: value,
+    }));
+  };
+
+  onSubmit = () => {
+
+    const errors = this.validateFields();
+    this.setState(() => ({
+      ...this.state,
+      errors,
+    }));
+
+    if (Object.keys(errors).length > 0) {
+      return;
     }
 
-    this.handleChange = this.props.actions.updateText;
-    this.onClick = this.props.actions.submit;
+    this.props.actions.submit("submitClear", this.state);
+    this.setState(() => this.initialState);
+  };
+
+  validateFields = () => {
+    const errors = {};
+
+    if (this.state.date === "") {
+      errors.date = "Required";
+    }
+    
+    return errors;
+  };
+
+  errorsText = () => {
+    return Object.entries(this.state.errors)
+      .map(([key, value]) => {
+        return String(key + ": " + value);
+      })
+      .join(", ");
+  };
+
+  render() {
+    const { date } = this.state;
+    const { Expenses } = this.props.state.ExpensesReducer;
+    if (Expenses.length === 0) {
+      return <div className="input-group mb-2 center">No Expenses</div>;
+    }
 
     return (
       <div className="input-group mb-2 ">
@@ -19,10 +69,10 @@ class ClearAction extends React.Component {
           name="date"
           value={date}
           placeholder="date"
-          onChange={this.handleChange}
+          onChange={this.onChange}
         />
         <button
-          onClick={this.onClick}
+          onClick={this.onSubmit}
           name="submitClear"
           className="btn btn-secondary"
         >
@@ -33,4 +83,4 @@ class ClearAction extends React.Component {
   }
 }
 
-export default bindActions(ClearAction);
+export default withExpenses(ClearAction);

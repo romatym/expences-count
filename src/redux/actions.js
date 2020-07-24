@@ -1,82 +1,44 @@
 import CallApi from "../api/api";
+import currenciesSet from "../redux/currensiesSet";
 
-export const updateText = (event) => {
-  const { value: text, name } = event.target;
-
-  switch (name) {
-    case "operation":
-      return {
-        type: "SHOW_PAGE",
-        payload: {
-          page: event.target.value,
-        },
-      };
-    case "currency":
-      return {
-        type: "UPDATE_TEXT",
-        payload: {
-          name,
-          text: event.target.options[event.target.value].text,
-        },
-      };
-    default:
-      return {
-        type: "UPDATE_TEXT",
-        payload: {
-          name,
-          text,
-        },
-      };
-  }
-};
-
-export const submit = (event, ...params) => {
-  const { name } = event.target;
-
-  switch (name) {
+export const submit = (action, payload) => {
+  switch (action) {
     case "submitAdd":
       return {
         type: "SUBMIT_ADD",
+        payload,
       };
-    case "submitClear":
+    case "submitDelete":
       return {
-        type: "SUBMIT_CLEAR",
+        type: "SUBMIT_DELETE",
+        payload,
       };
-    case "submitTotal":
-      return fetchCurrencies(params[0]);
+    case "updateCurrenciesRates":
+      return fetchCurrencies();
     default:
       return {
-        type: "SHOW_PAGE",
-        payload: {
-          page: "0",
-        },
+        type: "TEST"
       };
   }
 };
 
-export const fetchCurrencies = (currenciesParams) => (dispatch) => {
-  const { currency, currenciesList } = currenciesParams;
-  dispatch({
-    type: "UPDATE_CURRENCY_RATE",
-  });
-
+export const fetchCurrencies = () => (dispatch) => {
   CallApi.get("", {
     params: {
-      symbols: currenciesList.join(","),
+      symbols: currenciesSet.join(","),
     },
   })
     .then((data) => {
       if (data.success) {
         dispatch({
-          type: "SUBMIT_TOTAL",
+          type: "UPDATE_CURRENCIES_RATES",
           payload: {
-            baseCurrency: currency,
             currenciesRates: data.rates,
           },
         });
       } else {
         dispatch({
-          type: "SUBMIT_TOTAL",
+          type: "UPDATE_CURRENCIES_RATES",
           payload: {
             errors: data.error,
           },
@@ -84,10 +46,8 @@ export const fetchCurrencies = (currenciesParams) => (dispatch) => {
       }
     })
     .catch((response) => {
-      console.log("response", response);
-
       dispatch({
-        type: "SUBMIT_TOTAL",
+        type: "UPDATE_CURRENCIES_RATES",
         payload: {
           errors: response,
         },

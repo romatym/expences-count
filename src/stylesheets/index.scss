@@ -4,6 +4,14 @@ body {
   background: #fdfdfd;
 }
 
+.btn {
+  width: 72px;
+}
+
+.table-margin {
+  margin-top: 15%;
+}
+
 .center {
   display: flex;
   justify-content: center;
@@ -13,19 +21,56 @@ body {
 .center-date {
   display: inline-block;
 }
+
+.align-right {
+  text-align: right;
+}
+
+.center-text {
+  text-align: center;
+}
+
 .wrapper-date {
   width: 250px;
   margin-left: auto;
   margin-right: auto;
 }
 
+.error {
+  color: red;
+  font-size: smaller;
+  text-align: center;
+  border-bottom: none;
+}
+.table thead th.error {
+  border-top: none;
+  color: red;
+  font-size: smaller;
+  text-align: center;
+  border-bottom: none;
+}
 .action {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 30vh;
-  margin-left: 40%;
+  margin-top: 20vh;
   width: 200px;
+}
+
+.width5 {
+  width: 5%;
+}
+.width10 {
+  width: 10%;
+}
+.width15 {
+  width: 15%;
+}
+.width20 {
+  width: 20%;
+}
+.width30 {
+  width: 30%;
 }
 
 .btn {
@@ -33,7 +78,19 @@ body {
   margin-left: 7px;
 }
 .select-width {
-  max-width: 102px;
+  //max-width: 102px;
+  border: none;
+}
+.table td, table tr, .table thead th {
+  border-top: none;
+}
+.border-top-none {
+  border-top: none;
+}
+.total-width {
+  width: 100px;
+  text-align: right;
+  border: none;
 }
 
 .invalid-feedback {

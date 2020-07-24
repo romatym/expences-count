@@ -1,29 +1,83 @@
 import React from "react";
-import { bindActions } from "../hoc/bindActions";
+import { withExpenses } from "../hoc/withExpenses";
+import currenciesSet from "../redux/currensiesSet";
 
 class AddAction extends React.Component {
-  render() {
-    const {
-      date,
-      amount,
-      currenciesList,
-      currency,
-      item,
-    } = this.props.state.reducer;
-    this.handleChange = this.props.actions.updateText;
-    this.onClick = this.props.actions.submit;
+  constructor() {
+    super();
 
-    const currencyIndex = String(
-      1 + currenciesList.findIndex((item) => item === currency)
-    );
+    this.initialState = {
+      item: "",
+      date: this.todayDate(),
+      currency: "",
+      amount: "",
+      errors: {},
+    };
+    this.state = this.initialState;
+  }
+
+  todayDate = () => {
+    return String(new Date().toJSON().substring(0, 10));
+  };
+
+  onChange = (event) => {
+    const { name, value } = event.target;
+
+    this.setState(() => ({
+      [name]: value,
+    }));
+  };
+
+  onSubmit = () => {
+    const errors = this.validateFields();
+    this.setState(() => ({
+      ...this.state,
+      errors,
+    }));
+
+    if (Object.keys(errors).length > 0) {
+      return;
+    }
+
+    this.props.actions.submit("submitAdd", this.state);
+    this.setState(() => this.initialState);
+  };
+
+  validateFields = () => {
+    const errors = {};
+
+    if (this.state.date === "") {
+      errors.date = "Required";
+    }
+    if (this.state.amount === "") {
+      errors.amount = "Required";
+    }
+    if (this.state.currency === "") {
+      errors.currency = "Required";
+    }
+    if (this.state.item === "") {
+      errors.item = "Required";
+    }
+
+    return errors;
+  };
+  errorsText = () => {
+    return Object.entries(this.state.errors)
+      .map(([key, value]) => {
+        return String(key + ": " + value);
+      })
+      .join(", ");
+  };
+  render() {
+    const { date, amount, currency, item, errors } = this.state;
 
     const selectCurrencyList = [
       <option defaultValue key="0">
         currency
       </option>,
-      currenciesList.map((currency, index) => {
+      currenciesSet.map((currency, index) => {
         return (
-          <option key={index + 1} value={index + 1}>
+          <option key={index} value={currency}>
             {currency}
           </option>
         );
@@ -35,51 +89,54 @@ class AddAction extends React.Component {
         <div className="input-group mb-2">
           <input
             type="date"
-            className="form-control mb-2"
+            className="form-control mb-2  "
             name="date"
             value={date}
             placeholder="date"
-            onChange={this.handleChange}
+            onChange={this.onChange}
+          />
+
+          <input
+            type="text"
+            className="form-control  "
+            name="item"
+            value={item}
+            placeholder="Item"
+            onChange={this.onChange}
           />
 
           <input
             type="number"
-            className="form-control"
+            className="form-control  "
             name="amount"
             value={amount}
             placeholder="00.00"
-            onChange={this.handleChange}
+            onChange={this.onChange}
           />
 
           <select
-            className="custom-select select-width"
+            className="custom-select  "
             name="currency"
-            value={currencyIndex}
-            onChange={this.handleChange}
+            value={currency}
+            onChange={this.onChange}
           >
             {selectCurrencyList}
           </select>
 
-          <input
-            type="text"
-            className="form-control"
-            name="item"
-            value={item}
-            placeholder="Item"
-            onChange={this.handleChange}
-          />
-
           <button
             className="btn btn-secondary"
             name="submitAdd"
-            onClick={this.onClick}
+            onClick={this.onSubmit}
           >
             Save
           </button>
         </div>
+        {Object.keys(errors).length !== 0 && (
+          <div className="invalid-feedback">{this.errorsText()}</div>
+        )}
       </div>
     );
   }
 }
 
-export default bindActions(AddAction);
+export default withExpenses(AddAction);

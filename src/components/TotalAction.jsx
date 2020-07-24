@@ -1,34 +1,66 @@
 import React from "react";
-import { bindActions } from "../hoc/bindActions";
+import { withExpenses } from "../hoc/withExpenses";
+import currenciesSet from "../redux/currensiesSet";
 
 class TotalAction extends React.Component {
-  render() {
-    const {
-      currenciesList,
-      currency,
-      total,
-      totalExpences,
-    } = this.props.state.reducer;
-    this.handleChange = this.props.actions.updateText;
-    this.onClick = (event) => {
-      this.props.actions.submit(event, { currency, currenciesList });
-    };
+  constructor() {
+    super();
 
-    if (total.length === 0) {
-        return <div className="input-group mb-2 center">No expences</div>;
-      }
-  
-    const currencyIndex = String(
-      1 + currenciesList.findIndex((item) => item === currency)
-    );
+    this.initialState = {
+      currency: "",
+      errors: {},
+    };
+    this.state = this.initialState;
+  }
+
+  onChange = (event) => {
+    const { name, value } = event.target;
+
+    this.setState(() => ({
+      [name]: value,
+    }));
+  };
+
+  onSubmit = () => {
+    const errors = this.validateFields();
+    this.setState(() => ({
+      ...this.state,
+      errors,
+    }));
+
+    if (Object.keys(errors).length > 0) {
+      return;
+    }
+
+    this.props.actions.submit("submitTotal", this.state);
+    //this.setState(() => this.initialState);
+  };
+
+  validateFields = () => {
+    const errors = {};
+
+    if (this.state.currency === "") {
+      errors.currency = "Required";
+    }
+    
+    return errors;
+  };
+
+  render() {
+    const { Expenses, totalExpenses } = this.props.state.ExpensesReducer;
+    const { currency } = this.state;
+
+    if (Expenses.length === 0) {
+      return <div className="input-group mb-2 center">No Expenses</div>;
+    }
 
     const selectCurrencyList = [
       <option defaultValue key="0">
         currency
       </option>,
-      currenciesList.map((currency, index) => {
+      currenciesSet.map((currency, index) => {
         return (
-          <option key={index + 1} value={index + 1}>
+          <option key={index} value={currency}>
             {currency}
           </option>
         );
@@ -41,26 +73,26 @@ class TotalAction extends React.Component {
           <select
             className="custom-select "
             name="currency"
-            value={currencyIndex}
-            onChange={this.handleChange}
+            value={currency}
+            onChange={this.onChange}
           >
             {selectCurrencyList}
           </select>
           <button
             className="btn btn-secondary"
             name="submitTotal"
-            onClick={this.onClick}
+            onClick={this.onSubmit}
           >
             Calculate
           </button>
         </div>
         <div className="input-group mb-2 center">
-          {totalExpences !== 0 &&
-            "Total expences: " + totalExpences + " " + currency}
+          {totalExpenses !== 0 &&
+            "Total Expenses: " + totalExpenses + " " + currency}
         </div>
       </div>
     );
   }
 }
 
-export default bindActions(TotalAction);
+export default withExpenses(TotalAction);

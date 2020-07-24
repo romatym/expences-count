@@ -1,7 +1,5 @@
 import React from "react";
-// import { AppContext } from "../App";
 import { connect } from "react-redux";
-// import * as authActions from "../redux/auth/auth.actions";
 import * as actions from "../redux/actions";
 import { bindActionCreators } from "redux";
 
@@ -15,12 +13,12 @@ const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(actions, dispatch)
 });
 
-export const bindActions = (Component) =>
+export const withExpenses = (Component) =>
   connect(
     mapStateToProps,
     mapDispatchToProps
   )(
-    class bindActions extends React.Component {
+    class withExpenses extends React.Component {
       render() {
         return <Component {...this.props} />;
       }

@@ -1,2 +1,2 @@
-# expences count
- expences count test example
+# Expenses count
+ Expenses count test example

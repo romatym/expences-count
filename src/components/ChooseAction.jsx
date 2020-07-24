@@ -1,9 +1,22 @@
 import React from "react";
-import { bindActions } from "../hoc/bindActions";
+import { withExpenses } from "../hoc/withExpenses";
 
 class ChooseAction extends React.Component {
+  state = {
+    page: 1,
+  };
+
+  onChange = (event) => {
+    const { name, value } = event.target;
+
+    this.setState(() => ({
+      ...this.state,
+      [name]: value
+    }))
+  };
+
   render() {
-    const { page } = this.props.state.reducer;
+    const { page } = this.props.state.ExpensesReducer;
     this.handleChange = this.props.actions.updateText;
 
     return (
@@ -11,12 +24,14 @@ class ChooseAction extends React.Component {
         <div className="input-group mb-2">
           <select
             className="custom-select"
-            name="operation"
+            name="page"
             value={page}
-            onChange={this.handleChange}
+            onChange={this.onChange}
           >
-            <option defaultValue>Choose action...</option>
-            <option value="1">Add</option>
+            {/* <option defaultValue>Choose action...</option> */}
+            <option defaultValue value="1">
+              Add
+            </option>
             <option value="2">List</option>
             <option value="3">Clear</option>
             <option value="4">Total</option>
@@ -27,4 +42,4 @@ class ChooseAction extends React.Component {
   }
 }
 
-export default bindActions(ChooseAction);
+export default withExpenses(ChooseAction);

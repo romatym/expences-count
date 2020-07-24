@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import reducer from "./reducer";
+import ExpensesReducer from "./expensesReducer";
 
 export default combineReducers({
-    reducer
+    ExpensesReducer
 });
