@@ -1,19 +1,21 @@
 import React from "react";
-import { withExpenses } from "../hoc/withExpenses";
+import { withExpenses } from "../../hoc/withExpenses";
 
 class ExpensesListBody extends React.Component {
   onDelete = (event) => {
-    this.props.actions.submit("submitDelete", event.target.value);
+    this.props.expensesPageActions.expensesDelete(event.target.value);
   };
 
   render() {
-    const { expenses } = this.props.state.ExpensesReducer;
+    console.log("this.props", this.props);
+
+    const { expenses } = this.props.expensesPage;
 
     return (
       <tbody>
         {expenses
-          .sort((elem1, elem2) => {
-            return Date(elem1.date) - Date(elem2.date);
+          .sort((a, b) => {
+            return Date(a.date) - Date(b.date);
           })
           .map((record, index) => {
             return (

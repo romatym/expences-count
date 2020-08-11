@@ -1,6 +1,0 @@
-export const UPDATE_CURRENCIES_RATES = "UPDATE_CURRENCIES_RATES";
-export const SUBMIT_ADD = "SUBMIT_ADD";
-export const SUBMIT_DELETE = "SUBMIT_DELETE";
-
-
-

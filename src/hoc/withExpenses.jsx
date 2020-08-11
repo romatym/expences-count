@@ -1,16 +1,15 @@
 import React from "react";
 import { connect } from "react-redux";
-import * as actions from "../redux/actions";
+import * as actions from "../redux/ExpensesPage/actions";
 import { bindActionCreators } from "redux";
 
 const mapStateToProps = (state) => {
   return {
-    //actions: state.actions
-    state
+    expensesPage: state.ExpensesReducer
   };
 };
 const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators(actions, dispatch)
+  expensesPageActions: bindActionCreators(actions, dispatch)
 });
 
 export const withExpenses = (Component) =>

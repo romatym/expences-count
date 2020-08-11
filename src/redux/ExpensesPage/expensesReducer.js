@@ -11,7 +11,7 @@ const ExpensesReducer = (state = initialState, action) => {
   }
 
   switch (action.type) {
-    case types.SUBMIT_ADD:
+    case types.EXPENSES_ADD:
       const { date, amount, currency, item } = action.payload;
       return {
         ...state,
@@ -33,7 +33,7 @@ const ExpensesReducer = (state = initialState, action) => {
         currenciesRates
       };
 
-    case types.SUBMIT_DELETE:
+    case types.EXPENSES_DELETE:
       return {
         ...state,
         expenses: state.expenses.filter((elem, index) => {

@@ -1,31 +1,25 @@
 import React from "react";
-import { withExpenses } from "../hoc/withExpenses";
-import currenciesSet from "../redux/currensiesSet";
+import { withExpenses } from "../../hoc/withExpenses";
+import currenciesSet from "../../redux/ExpensesPage/currensiesSet";
 
-class HeaderWithTotalExcpenses extends React.Component {
+class TotalExpenses extends React.Component {
   constructor() {
     super();
 
     this.initialState = {
       currencyTotal: currenciesSet[0],
-      amountTotal: "",
     };
     this.state = this.initialState;
   }
 
   componentDidMount() {
-    this.props.actions.submit("updateCurrenciesRates");
+    this.props.expensesPageActions.expensesFetchCurrencies();
   }
 
   onChangeCurrencyTotal = (event) => {
-    const { name, value } = event.target;
-
-    this.setState(() => ({
-      ...this.state,
-      [name]: value,
-    }));
-
-    //this.props.actions.submit("updateCurrenciesRates");
+    this.setState({
+      currencyTotal: event.target.value,
+    });
   };
 
   selectCurrencyList = () => {
@@ -45,27 +39,20 @@ class HeaderWithTotalExcpenses extends React.Component {
       return 0;
     }
 
-    let baseRate = 0,
-      currentRate = 0;
+    const total = expenses.reduce((acc, expense) => {
+      const baseRate = currenciesRates[currencyTotal];
+      const currentRate = currenciesRates[expense.currency];
+      return acc + (Number(expense.amount) * baseRate) / currentRate;
+    }, 0);
 
-    const amountTotal =
-      Math.round(
-        expenses.reduce((accumulator, currentElement) => {
-          baseRate = currenciesRates[currencyTotal];
-          currentRate = currenciesRates[currentElement.currency];
-          return (
-            accumulator +
-            (Number(currentElement.amount) * baseRate) / currentRate
-          );
-        }, 0) * 100
-      ) / 100;
+    const amountTotal = Math.round(total * 100) / 100;
 
     return amountTotal;
   };
 
   render() {
     const { currencyTotal } = this.state;
-    const { currenciesRates, expenses } = this.props.state.ExpensesReducer;
+    const { currenciesRates, expenses } = this.props.expensesPage;
 
     const amountTotal = this.countTotalExpenses(
       currencyTotal,
@@ -75,6 +62,8 @@ class HeaderWithTotalExcpenses extends React.Component {
 
     // не получилось вынести функцию selectCurrencyList в отдельный модуль
     const selectCurrencyList = this.selectCurrencyList();
+
+    console.log("selectCurrencyList", selectCurrencyList);
 
     return (
       <div className="form-row">
@@ -99,4 +88,4 @@ class HeaderWithTotalExcpenses extends React.Component {
   }
 }
 
-export default withExpenses(HeaderWithTotalExcpenses);
+export default withExpenses(TotalExpenses);

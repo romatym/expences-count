@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import ExpensesReducer from "./expensesReducer";
+import ExpensesReducer from "./ExpensesPage/expensesReducer";
 
 export default combineReducers({
     ExpensesReducer

@@ -1,21 +1,22 @@
 import React from "react";
-import { withExpenses } from "../hoc/withExpenses";
-import currenciesSet from "../redux/currensiesSet";
+import { withExpenses } from "../../hoc/withExpenses";
+import currenciesSet from "../../redux/ExpensesPage/currensiesSet";
 
-class AddAction extends React.Component {
+class ExpensesListAdd extends React.Component {
   constructor() {
     super();
 
     this.initialState = {
+      currencyTotal: "",
+      amountTotal: "",
       item: "",
       date: this.todayDate(),
-      currency: "",
+      currency: currenciesSet[0],
       amount: "",
       errors: {},
     };
     this.state = this.initialState;
   }
-
   todayDate = () => {
     return String(new Date().toJSON().substring(0, 10));
   };
@@ -28,7 +29,7 @@ class AddAction extends React.Component {
     }));
   };
 
-  onSubmit = () => {
+  onAdd = () => {
     const errors = this.validateFields();
     this.setState(() => ({
       ...this.state,
@@ -39,8 +40,12 @@ class AddAction extends React.Component {
       return;
     }
 
-    this.props.actions.submit("submitAdd", this.state);
+    this.props.expensesPageActions.expensesAdd(this.state);
     this.setState(() => this.initialState);
+  };
+
+  onDelete = (event) => {
+    this.props.expensesPageActions.expensesDelete(event.target.value);
   };
 
   validateFields = () => {
@@ -61,20 +66,11 @@ class AddAction extends React.Component {
 
     return errors;
   };
-  errorsText = () => {
-    return Object.entries(this.state.errors)
-      .map(([key, value]) => {
-        return String(key + ": " + value);
-      })
-      .join(", ");
-  };
+
   render() {
     const { date, amount, currency, item, errors } = this.state;
 
     const selectCurrencyList = [
-      <option defaultValue key="0">
-        currency
-      </option>,
       currenciesSet.map((currency, index) => {
         return (
           <option key={index} value={currency}>
@@ -85,26 +81,32 @@ class AddAction extends React.Component {
     ];
 
     return (
-      <div className="form-row">
-        <div className="input-group mb-2">
+      <tr>
+        <td className="width5"></td>
+        <td className="width10">
           <input
             type="date"
-            className="form-control mb-2  "
+            className="form-control mb-2 "
             name="date"
             value={date}
             placeholder="date"
             onChange={this.onChange}
           />
-
+          <div className="invalid-feedback">{errors.date}</div>
+        </td>
+        <td>
           <input
             type="text"
-            className="form-control  "
+            className="form-control"
             name="item"
             value={item}
             placeholder="Item"
             onChange={this.onChange}
+            required
           />
-
+          <div className="invalid-feedback">{errors.item}</div>
+        </td>
+        <td className="width15">
           <input
             type="number"
             className="form-control  "
@@ -113,7 +115,9 @@ class AddAction extends React.Component {
             placeholder="00.00"
             onChange={this.onChange}
           />
-
+          <div className="invalid-feedback">{errors.amount}</div>
+        </td>
+        <td className="width10">
           <select
             className="custom-select  "
             name="currency"
@@ -122,21 +126,21 @@ class AddAction extends React.Component {
           >
             {selectCurrencyList}
           </select>
+          <div className="invalid-feedback">{errors.currency}</div>
+        </td>
 
+        <td className="border-top-none">
           <button
             className="btn btn-secondary"
             name="submitAdd"
-            onClick={this.onSubmit}
+            onClick={this.onAdd}
           >
-            Save
+            Add
           </button>
-        </div>
-        {Object.keys(errors).length !== 0 && (
-          <div className="invalid-feedback">{this.errorsText()}</div>
-        )}
-      </div>
+        </td>
+      </tr>
     );
   }
 }
 
-export default withExpenses(AddAction);
+export default withExpenses(ExpensesListAdd);

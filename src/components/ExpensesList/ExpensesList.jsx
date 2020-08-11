@@ -1,5 +1,5 @@
 import React from "react";
-import { withExpenses } from "../hoc/withExpenses";
+import { withExpenses } from "../../hoc/withExpenses";
 import ExpensesListHead from "./ExpensesListHead";
 import ExpensesListBody from "./ExpensesListBody";
 

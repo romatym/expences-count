@@ -1,8 +1,6 @@
 import React from "react";
-import ExpensesList from "./ExpensesList";
-import HeaderWithTotalExcpenses from "./HeaderWithTotalExcpenses";
-
-import { withExpenses } from "../hoc/withExpenses";
+import ExpensesList from "./ExpensesList/ExpensesList";
+import TotalExpenses from "./ExpensesList/TotalExpenses";
 
 class App extends React.Component {
   
@@ -10,11 +8,11 @@ class App extends React.Component {
 
     return (
       <div className="container ">
-        <HeaderWithTotalExcpenses/>
+        <TotalExpenses/>
         <ExpensesList/>
       </div>
     );
   }
 }
 
-export default withExpenses(App);
+export default App;

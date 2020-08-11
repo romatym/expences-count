@@ -1,5 +1,5 @@
 import React from "react";
-import currenciesSet from "../redux/currensiesSet";
+import currenciesSet from "../../redux/ExpensesPage/currensiesSet";
 
 const selectCurrencyList = () => {
     return [
